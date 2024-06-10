@@ -17,7 +17,7 @@ pub fn set<P>(path: P) -> Result<()>
 where
     P: AsRef<std::path::Path> + std::fmt::Display,
 {
-    let uri = enquote::enquote('"', &format!("file://{}", &path));
+    let uri = format!("file://{}", &path);
     let res = run(
         "gsettings",
         &["set", "org.gnome.desktop.background", "picture-uri", &uri],
