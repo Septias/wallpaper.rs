@@ -79,6 +79,25 @@ where
                 &enquote::enquote('"', &format!("file://{}", &path)),
             ],
         ),
+        "Hyprland" => {
+            run(
+                "hyprctl",
+                &[
+                    "hyprpaper",
+                    "preload",
+                    &format!("{}", path.as_ref().to_str().ok_or(Error::InvalidPath)?),
+                ],
+            )?;
+
+            run(
+                "hyprctl",
+                &[
+                    "hyprpaper",
+                    "wallpaper",
+                    &format!(",{}", path.as_ref().to_str().ok_or(Error::InvalidPath)?),
+                ],
+            )
+        }
         _ => {
             if let Ok(mut child) = Command::new("swaybg")
                 .args(&["-i", path.as_ref().to_str().ok_or(Error::InvalidPath)?])
