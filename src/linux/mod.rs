@@ -80,6 +80,7 @@ where
             ],
         ),
         "Hyprland" => {
+            gnome::set(&path)?;
             run(
                 "hyprctl",
                 &[
