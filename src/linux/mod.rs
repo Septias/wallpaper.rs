@@ -80,24 +80,14 @@ where
             ],
         ),
         "Hyprland" => {
-            gnome::set(&path)?;
+            let uri = path.as_ref().to_str().ok_or(Error::InvalidPath)?;
             run(
-                "hyprctl",
-                &[
-                    "hyprpaper",
-                    "preload",
-                    &format!("{}", path.as_ref().to_str().ok_or(Error::InvalidPath)?),
-                ],
+                "dconf",
+                &["write", "/org/gnome/desktop/background/picture-uri", &uri],
             )?;
+            run("hyprctl", &["hyprpaper", "preload", &format!("{}", uri)])?;
 
-            run(
-                "hyprctl",
-                &[
-                    "hyprpaper",
-                    "wallpaper",
-                    &format!(",{}", path.as_ref().to_str().ok_or(Error::InvalidPath)?),
-                ],
-            )
+            run("hyprctl", &["hyprpaper", "wallpaper", &format!(",{}", uri)])
         }
         _ => {
             if let Ok(mut child) = Command::new("swaybg")
